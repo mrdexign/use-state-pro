@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>useStatePro - State Management Like a Pro</title>
+		<meta
+			name="description"
+			content="Advanced React hook with temporary state, change tracking, and automatic TypeScript nested path suggestions" />
+		<meta name="keywords" content="React, useStatePro, state management, hooks, TypeScript" />
+		<meta name="author" content="useStatePro" />
+		<meta property="og:title" content="useStatePro - State Management Like a Pro" />
+		<meta
+			property="og:description"
+			content="Advanced React hook with temporary state, change tracking, and automatic TypeScript nested path suggestions" />
+		<meta property="og:type" content="website" />
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css" />
+		<script src="https://cdn.tailwindcss.com"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.10/clipboard.min.js"></script>
+		<style>
+			body {
+				font-family: 'Inter', sans-serif;
+				padding-top: 4rem; /* Offset for fixed navbar */
+			}
+			.navbar {
+				backdrop-filter: blur(10px);
+				background: rgba(255, 255, 255, 0.8);
+			}
+			.gradient-bg {
+				background: linear-gradient(135deg, #336657 0%, #00373d 100%);
+			}
+			.code-container {
+				position: relative;
+				margin-bottom: 1rem;
+			}
+			.copy-btn {
+				position: absolute;
+				right: 0.75rem;
+				top: 0.75rem;
+				background: rgba(255, 255, 255, 0.1);
+				border: none;
+				color: white;
+				padding: 0.35rem;
+				border-radius: 0.375rem;
+				cursor: pointer;
+				transition: all 0.2s;
+				z-index: 10;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.copy-btn:hover {
+				background: rgba(255, 255, 255, 0.2);
+			}
+			.copy-btn.copied {
+				background: #48bb78;
+			}
+			.copy-btn.copied svg {
+				display: none;
+			}
+			.copy-btn.copied::after {
+				content: 'Copied!';
+				font-size: 0.75rem;
+			}
+			.install-commands {
+				display: flex;
+				gap: 1rem;
+				margin-bottom: 1.5rem;
+			}
+			.install-command {
+				flex: 1;
+				position: relative;
+			}
+			pre {
+				border-radius: 0.5rem;
+				overflow: hidden;
+			}
+			.feature-icon {
+				display: flex;
+				justify-content: center;
+				margin-bottom: 1rem;
+			}
+			.mobile-menu {
+				display: none;
+			}
+			@media (max-width: 768px) {
+				.mobile-menu {
+					display: block;
+				}
+				.desktop-menu {
+					display: none;
+				}
+			}
+		</style>
+	</head>
+	<body class="bg-gray-50 min-h-screen">
+		<!-- Navbar -->
+
+		<nav class="navbar fixed w-full z-50 top-0 border-b border-gray-200 bg-white">
+			<div class="container mx-auto px-6">
+				<div class="flex items-center justify-between h-16">
+					<div class="flex items-center">
+						<a href="#hero" class="flex items-center">
+							<span class="text-xl text-green-900 font-bold text-gray-900">useStatePro</span>
+						</a>
+					</div>
+					<!-- Desktop Menu -->
+					<div class="hidden md:flex items-center space-x-8">
+						<a href="#features" class="nav-link text-gray-700 hover:text-green-700 transition">Features</a>
+						<a href="#installation" class="nav-link text-gray-700 hover:text-green-700 transition">Installation</a>
+						<a href="#examples" class="nav-link text-gray-700 hover:text-green-700 transition">Examples</a>
+						<a href="#api" class="nav-link text-gray-700 hover:text-green-700 transition">API</a>
+						<a
+							target="_blank"
+							href="https://github.com/mrdexign/use-state-pro"
+							class="gradient-bg text-white px-4 py-2 rounded-lg font-medium hover:bg-purple-700 transition">
+							GitHub
+						</a>
+					</div>
+					<!-- Mobile Menu Button -->
+					<button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+						</svg>
+					</button>
+				</div>
+				<!-- Mobile Menu -->
+				<div id="mobile-menu" class="md:hidden hidden pb-4">
+					<div class="flex flex-col space-y-5">
+						<a
+							target="_blank"
+							href="https://github.com/mrdexign/use-state-pro"
+							class="gradient-bg text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition text-center">
+							GitHub
+						</a>
+						<a href="#features" class="nav-link text-gray-700 hover:text-green-700 transition">Features</a>
+						<a href="#installation" class="nav-link text-gray-700 hover:text-green-700 transition">Installation</a>
+						<a href="#examples" class="nav-link text-gray-700 hover:text-green-700 transition">Examples</a>
+						<a href="#api" class="nav-link text-gray-700 hover:text-green-700 transition">API</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<header class="gradient-bg text-white">
+			<div id="hero" class="container mx-auto px-6 pb-16 pt-12">
+				<div class="flex flex-col items-center">
+					<h1 class="text-5xl font-bold text-center mb-2">useStatePro</h1>
+					<p class="text-xl md:text-2xl text-center max-w-2xl opacity-60 mb-6 mt-4">
+						State Management <strong>Like a Pro</strong>
+					</p>
+					<hr class="w-full opacity-10 mt-5 mb-10" />
+					<p class="text-lg text-center max-w-2xl opacity-90 mb-8">
+						A hook with temporary state, change tracking,<br />
+						and automatic TypeScript nested path suggestions
+					</p>
+					<div class="mt-4 flex gap-4">
+						<a
+							href="#installation"
+							class="bg-white text-green-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition flex items-center gap-2">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+							</svg>
+							Get Started
+						</a>
+						<a
+							target="_blank"
+							href="https://github.com/mrdexign/use-state-pro"
+							class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:bg-opacity-10 transition flex items-center gap-2">
+							<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+								<path
+									fill-rule="evenodd"
+									clip-rule="evenodd"
+									d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+							</svg>
+							GitHub
+						</a>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<main class="container mx-auto px-6 py-16">
+			<section id="features" class="mb-20">
+				<h2 class="text-3xl font-bold mb-8 text-center">Why useStatePro?</h2>
+				<div class="grid md:grid-cols-3 gap-8">
+					<div class="bg-white p-6 rounded-xl shadow-md">
+						<div class="feature-icon text-green-700">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-2 text-center">Temporary State</h3>
+						<p class="text-gray-600 text-center">
+							Maintain a temporary state that can be discarded or merged with the original state, perfect for forms and edit
+							UIs.
+						</p>
+					</div>
+					<div class="bg-white p-6 rounded-xl shadow-md">
+						<div class="feature-icon text-green-700">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-2 text-center">Smart Type Inference</h3>
+						<p class="text-gray-600 text-center">
+							Automatic TypeScript suggestions for nested paths without manual interface definitions.
+						</p>
+					</div>
+					<div class="bg-white p-6 rounded-xl shadow-md">
+						<div class="feature-icon text-green-700">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+							</svg>
+						</div>
+						<h3 class="text-xl font-semibold mb-2 text-center">Nested Objects</h3>
+						<p class="text-gray-600 text-center">Deep nested object access with full type safety and autocomplete.</p>
+					</div>
+				</div>
+			</section>
+
+			<section id="installation" class="mb-20">
+				<h2 class="text-3xl font-bold mb-8 text-center">Installation</h2>
+				<div class="max-w-3xl mx-auto">
+					<div class="install-commands">
+						<div class="install-command">
+							<button class="copy-btn" data-clipboard-target="#npm-code" title="Copy npm command">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-4 w-4"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor">
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+								</svg>
+							</button>
+							<pre><code id="npm-code" class="language-bash">npm install use-state-pro</code></pre>
+						</div>
+						<div class="install-command">
+							<button class="copy-btn" data-clipboard-target="#yarn-code" title="Copy yarn command">
+								<svg
+									xmlns="http://www.w3.org/2000/svg"
+									class="h-4 w-4"
+									fill="none"
+									viewBox="0 0 24 24"
+									stroke="currentColor">
+									<path
+										stroke-linecap="round"
+										stroke-linejoin="round"
+										stroke-width="2"
+										d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+								</svg>
+							</button>
+							<pre><code id="yarn-code" class="language-bash">yarn add use-state-pro</code></pre>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section id="examples" class="mb-20">
+				<h2 class="text-3xl font-bold mb-8 text-center">Usage Examples</h2>
+
+				<div class="max-w-3xl mx-auto mb-12">
+					<h3 class="text-xl font-semibold mb-4">Basic Usage</h3>
+					<div class="code-container">
+						<button class="copy-btn" data-clipboard-target="#basic-usage-code" title="Copy code">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+							</svg>
+						</button>
+						<pre><code id="basic-usage-code" class="language-javascript">import useStatePro from 'use-state-pro';
+
+function UserForm({ user }) {
+    const { tmp, org, changed, set, discard, merge } = useStatePro(user);
+    
+    const handleSave = () => {
+        // Save to API then merge changes
+        merge();
+    };
+    
+    return (
+        &lt;div>
+            &lt;input 
+                value={tmp.name} 
+                onChange={e => set.tmp('name', e.target.value)} 
+            />
+            &lt;input 
+                value={tmp.email} 
+                onChange={e => set.tmp('email', e.target.value)} 
+            />
+            
+            {changed && (
+                &lt;div>
+                    &lt;button onClick={discard}>Discard&lt;/button>
+                    &lt;button onClick={handleSave}>Save&lt;/button>
+                &lt;/div>
+            )}
+        &lt;/div>
+    );
+}</code></pre>
+					</div>
+				</div>
+
+				<div class="max-w-3xl mx-auto">
+					<h3 class="text-xl font-semibold mb-4">Automatic Type Inference</h3>
+					<div class="code-container">
+						<button class="copy-btn" data-clipboard-target="#nested-code" title="Copy code">
+							<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+							</svg>
+						</button>
+						<pre><code id="nested-code" class="language-typescript">const { tmp, set, get } = useStatePro({
+    user: {
+        name: 'John',
+        profile: {
+            email: 'john@example.com',
+            preferences: {
+                theme: 'light',
+                notifications: true
+            }
+        },
+        orders: [
+            { id: 1, total: 100 },
+            { id: 2, total: 200 }
+        ]
+    }
+});
+
+// Get nested value
+const theme = tmp.user.profile.preferences.theme;
+
+// Full type suggestions for nested paths
+set.tmp('user.profile.preferences.theme', 'dark');
+
+// Functional updates also supported
+set.tmp('user.orders', items => [...items, { id: 3, total: 300 }]);
+
+</code></pre>
+					</div>
+					<img style="border-radius: 6px; margin-bottom: 1rem" src="./images/sample-1.png" />
+				</div>
+			</section>
+
+			<section id="api" class="mb-20">
+				<h2 class="text-3xl font-bold mb-8 text-center">API Reference</h2>
+
+				<div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+					<div class="p-6">
+						<h3 class="text-xl font-semibold mb-4">Return Values</h3>
+						<div class="overflow-x-auto">
+							<table class="min-w-full divide-y divide-gray-200">
+								<thead class="bg-gray-50">
+									<tr>
+										<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+											Property
+										</th>
+										<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+										<th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+											Description
+										</th>
+									</tr>
+								</thead>
+								<tbody class="bg-white divide-y divide-gray-200">
+									<tr>
+										<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">tmp</td>
+										<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">T</td>
+										<td class="px-6 py-4 text-sm text-gray-500">The temporary state object</td>
+									</tr>
+									<tr>
+										<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">org</td>
+										<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">T</td>
+										<td class="px-6 py-4 text-sm text-gray-500">The original state object</td>
+									</tr>
+									<tr>
+										<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">changed</td>
+										<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">boolean</td>
+										<td class="px-6 py-4 text-sm text-gray-500">True if tmp differs from org</td>
+									</tr>
+									<tr>
+										<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">set.tmp</td>
+										<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">function</td>
+										<td class="px-6 py-4 text-sm text-gray-500">
+											Setter for temporary state (supports dot notation and functional updates)
+										</td>
+									</tr>
+									<tr>
+										<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">set.org</td>
+										<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">function</td>
+										<td class="px-6 py-4 text-sm text-gray-500">
+											Setter for original state (supports dot notation and functional updates)
+										</td>
+									</tr>
+									<tr>
+										<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">get.tmp</td>
+										<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">function</td>
+										<td class="px-6 py-4 text-sm text-gray-500">Getter for temporary state (supports dot notation)</td>
+									</tr>
+									<tr>
+										<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">get.org</td>
+										<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">function</td>
+										<td class="px-6 py-4 text-sm text-gray-500">Getter for original state (supports dot notation)</td>
+									</tr>
+									<tr>
+										<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">discard</td>
+										<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">function</td>
+										<td class="px-6 py-4 text-sm text-gray-500">Reset tmp to match org</td>
+									</tr>
+									<tr>
+										<td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">merge</td>
+										<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">function</td>
+										<td class="px-6 py-4 text-sm text-gray-500">Copy tmp to org</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<footer class="gradient-bg text-white py-12">
+			<div class="container mx-auto px-6">
+				<div class="flex flex-col items-center">
+					<h2 class="text-2xl font-bold mb-4">useStatePro</h2>
+					<p class="mb-6 text-center max-w-2xl opacity-90">Advanced React state management made simple</p>
+					<div class="flex gap-4">
+						<a target="_blank" href="https://github.com/mrdexign/use-state-pro" class="text-white hover:text-gray-200">
+							<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+								<path
+									fill-rule="evenodd"
+									clip-rule="evenodd"
+									d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+							</svg>
+						</a>
+						<a href="https://npmjs.com/package/use-state-pro" class="text-white hover:text-gray-200">
+							<svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+								<path
+									d="M1.763 0C.786 0 0 .786 0 1.763v20.474C0 23.214.786 24 1.763 24h20.474c.977 0 1.763-.786 1.763-1.763V1.763C24 .786 23.214 0 22.237 0zM5.13 5.323l13.837.019-.009 13.836h-3.464l.01-10.382h-3.456L12.04 19.17H5.113z" />
+							</svg>
+						</a>
+					</div>
+					<p class="mt-8 text-sm opacity-75">&copy; useStatePro <span id="current-year"></span>. MIT Licensed.</p>
+				</div>
+			</div>
+		</footer>
+
+		<script>
+			// Initialize syntax highlighting
+			document.addEventListener('DOMContentLoaded', event => {
+				document.querySelectorAll('pre code').forEach(block => {
+					hljs.highlightElement(block);
+				});
+
+				// Initialize clipboard.js
+				const clipboard = new ClipboardJS('.copy-btn', {
+					text: function (trigger) {
+						const target = trigger.getAttribute('data-clipboard-target');
+						return document.querySelector(target).innerText;
+					},
+				});
+
+				// Add copied feedback
+				document.querySelectorAll('.copy-btn').forEach(btn => {
+					btn.addEventListener('click', function () {
+						this.classList.add('copied');
+						setTimeout(() => {
+							this.classList.remove('copied');
+						}, 2000);
+					});
+				});
+
+				// Error handling for clipboard
+				clipboard.on('error', function (e) {
+					console.error('Clipboard error:', e.action);
+				});
+
+				// Set current year
+				document.getElementById('current-year').textContent = new Date().getFullYear();
+
+				const mobileMenuButton = document.getElementById('mobile-menu-button');
+				const mobileMenu = document.getElementById('mobile-menu');
+
+				mobileMenu.addEventListener('click', function () {
+					mobileMenu.classList.toggle('hidden');
+				});
+				mobileMenuButton.addEventListener('click', function () {
+					mobileMenu.classList.toggle('hidden');
+				});
+
+				// Smooth scrolling for anchor links with 100px offset
+				document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+					anchor.addEventListener('click', function (e) {
+						e.preventDefault();
+						const targetId = this.getAttribute('href');
+						const targetElement = document.querySelector(targetId);
+
+						if (targetElement) {
+							const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+							const offsetPosition = targetPosition - 100; // 100px offset from top
+
+							window.scrollTo({
+								top: offsetPosition,
+								behavior: 'smooth',
+							});
+						}
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
