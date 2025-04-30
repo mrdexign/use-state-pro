@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<!-- Google tag (gtag.js) -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-S9RQJ2R34M"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag() {
+				dataLayer.push(arguments);
+			}
+			gtag('js', new Date());
+
+			gtag('config', 'G-S9RQJ2R34M');
+		</script>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>useStatePro - State Management Like a Pro</title>
@@ -108,10 +119,10 @@
 					</div>
 					<!-- Desktop Menu -->
 					<div class="hidden md:flex items-center space-x-8">
-						<a href="#features" class="nav-link text-gray-700 hover:text-green-700 transition">Features</a>
-						<a href="#installation" class="nav-link text-gray-700 hover:text-green-700 transition">Installation</a>
-						<a href="#examples" class="nav-link text-gray-700 hover:text-green-700 transition">Examples</a>
-						<a href="#api" class="nav-link text-gray-700 hover:text-green-700 transition">API</a>
+						<a href="#features" class="nav-link text-gray-700 hover:text-green-900 transition">Features</a>
+						<a href="#installation" class="nav-link text-gray-700 hover:text-green-900 transition">Installation</a>
+						<a href="#examples" class="nav-link text-gray-700 hover:text-green-900 transition">Examples</a>
+						<a href="#api" class="nav-link text-gray-700 hover:text-green-900 transition">API</a>
 						<a
 							target="_blank"
 							href="https://github.com/mrdexign/use-state-pro"
@@ -135,10 +146,10 @@
 							class="gradient-bg text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition text-center">
 							GitHub
 						</a>
-						<a href="#features" class="nav-link text-gray-700 hover:text-green-700 transition">Features</a>
-						<a href="#installation" class="nav-link text-gray-700 hover:text-green-700 transition">Installation</a>
-						<a href="#examples" class="nav-link text-gray-700 hover:text-green-700 transition">Examples</a>
-						<a href="#api" class="nav-link text-gray-700 hover:text-green-700 transition">API</a>
+						<a href="#features" class="nav-link text-gray-700 hover:text-green-900 transition">Features</a>
+						<a href="#installation" class="nav-link text-gray-700 hover:text-green-900 transition">Installation</a>
+						<a href="#examples" class="nav-link text-gray-700 hover:text-green-900 transition">Examples</a>
+						<a href="#api" class="nav-link text-gray-700 hover:text-green-900 transition">API</a>
 					</div>
 				</div>
 			</div>
@@ -159,7 +170,7 @@
 					<div class="mt-4 flex gap-4">
 						<a
 							href="#installation"
-							class="bg-white text-green-700 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition flex items-center gap-2">
+							class="bg-white text-green-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition flex items-center gap-2">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
 							</svg>
@@ -187,7 +198,7 @@
 				<h2 class="text-3xl font-bold mb-8 text-center">Why useStatePro?</h2>
 				<div class="grid md:grid-cols-3 gap-8">
 					<div class="bg-white p-6 rounded-xl shadow-md">
-						<div class="feature-icon text-green-700">
+						<div class="feature-icon text-green-900">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
 							</svg>
@@ -199,7 +210,7 @@
 						</p>
 					</div>
 					<div class="bg-white p-6 rounded-xl shadow-md">
-						<div class="feature-icon text-green-700">
+						<div class="feature-icon text-green-900">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path
 									stroke-linecap="round"
@@ -214,7 +225,7 @@
 						</p>
 					</div>
 					<div class="bg-white p-6 rounded-xl shadow-md">
-						<div class="feature-icon text-green-700">
+						<div class="feature-icon text-green-900">
 							<svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 								<path
 									stroke-linecap="round"
@@ -232,7 +243,7 @@
 			<section id="installation" class="mb-20">
 				<h2 class="text-3xl font-bold mb-8 text-center">Installation</h2>
 				<div class="max-w-3xl mx-auto">
-					<div class="install-commands">
+					<div class="install-commands grid grid-cols-1 md:grid-cols-2 gap-4">
 						<div class="install-command">
 							<button class="copy-btn" data-clipboard-target="#npm-code" title="Copy npm command">
 								<svg
@@ -359,7 +370,7 @@ set.tmp('user.orders', items => [...items, { id: 3, total: 300 }]);
 
 </code></pre>
 					</div>
-					<img style="border-radius: 6px; margin-bottom: 1rem" src="./images/sample-1.png" />
+					<img style="border-radius: 6px; margin-bottom: 1rem" src="https://files.mrdexign.ir/statePro/sample-1.png" />
 				</div>
 			</section>
 
