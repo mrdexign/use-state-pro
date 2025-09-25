@@ -7,7 +7,7 @@ const useStatePro = <T extends OBJECT = OBJECT<any>>(in_state: T, dependencies: 
 	const [org, setInOrg] = useMountedState<T>(OBJ.clone(in_state));
 	const [tmp, setInTmp] = useMountedState<T>(OBJ.clone(in_state));
 
-	//? ------------------------------ useEffect ------------------------------------------------
+	//? ------------------------------ Effects -----------------------------------------------
 
 	useEffect(() => {
 		const cloned = OBJ.clone(in_state);
@@ -21,11 +21,11 @@ const useStatePro = <T extends OBJECT = OBJECT<any>>(in_state: T, dependencies: 
 		setInTmp(OBJ.clone(org));
 	}, [org]);
 
-	//? ------------------------------ vars --------------------------------------------------
+	//? ------------------------------ Vars --------------------------------------------------
 
 	const changed = useMemo(() => !OBJ.equals(org, tmp), [org, tmp]);
 
-	//? ---------------------------------- utils ------------------------------------------------
+	//? ----------------------------- Methods ------------------------------------------------
 
 	function setOrg(state: StateDispatch<T>): void;
 	function setOrg(key: SUG<NestedKeyOf<T>>, value: StateDispatch<any>): void;
@@ -49,16 +49,29 @@ const useStatePro = <T extends OBJECT = OBJECT<any>>(in_state: T, dependencies: 
 		return OBJ.get(tmp, key);
 	}
 
+	function discard(): void;
+	function discard(key: SUG<NestedKeyOf<T>>): void;
+	function discard(key?: SUG<NestedKeyOf<T>>) {
+		if (!key) return setInTmp(org);
+		setInTmp(prev => {
+			const updated = OBJ.clone(prev);
+			const originalValue = OBJ.get(org, key);
+			return OBJ.set(updated, key, originalValue);
+		});
+	}
+
 	return {
 		tmp,
 		org,
 		changed,
-		discard: () => setInTmp(org),
+		discard,
 		set: { org: setOrg, tmp: setTmp },
 		get: { org: getOrg, tmp: getTmp },
 		merge: () => setInOrg(OBJ.clone(tmp)),
 	};
 };
+
+//? ------------------------------------ 👇 Types ----------------------------------------
 
 export type NestedKeyOf<O extends Record<string, unknown>> = {
 	[K in Extract<keyof O, string>]: O[K] extends Array<any>
@@ -69,5 +82,7 @@ export type NestedKeyOf<O extends Record<string, unknown>> = {
 }[Extract<keyof O, string>];
 
 type StateDispatch<T = any> = SetStateAction<T>;
+
+// -----------------------------------------------------------------------------------------
 
 export default useStatePro;
