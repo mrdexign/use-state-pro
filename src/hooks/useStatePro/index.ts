@@ -7,7 +7,6 @@ const useStatePro = <T extends OBJECT = OBJECT<any>>(in_state: T, dependencies: 
 	const [org, setInOrg] = useMountedState<T>(OBJ.clone(in_state));
 	const [tmp, setInTmp] = useMountedState<T>(OBJ.clone(in_state));
 
-	//
 	//? ------------------------------ Effects -----------------------------------------------
 
 	useEffect(() => {
