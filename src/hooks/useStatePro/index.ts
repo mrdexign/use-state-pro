@@ -7,6 +7,7 @@ const useStatePro = <T extends OBJECT = OBJECT<any>>(in_state: T, dependencies: 
 	const [org, setInOrg] = useMountedState<T>(OBJ.clone(in_state));
 	const [tmp, setInTmp] = useMountedState<T>(OBJ.clone(in_state));
 
+	//
 	//? ------------------------------ Effects -----------------------------------------------
 
 	useEffect(() => {
@@ -77,8 +78,8 @@ export type NestedKeyOf<O extends Record<string, unknown>> = {
 	[K in Extract<keyof O, string>]: O[K] extends Array<any>
 		? K
 		: O[K] extends Record<string, unknown>
-		? `${K}` | `${K}.${NestedKeyOf<O[K]>}`
-		: K;
+			? `${K}` | `${K}.${NestedKeyOf<O[K]>}`
+			: K;
 }[Extract<keyof O, string>];
 
 type StateDispatch<T = any> = SetStateAction<T>;
